@@ -13,4 +13,4 @@ app.get("/2",function(req,res){
     res.send('leardary ashish lal welcome to your room no.2')
 })
 
-app.listen(3000,() => console.log('listening at 3000'));     //Listen on a port 
+app.listen(process.env.PORT || 4000,() => console.log('listening at 4000'));     //Listen on a port 
