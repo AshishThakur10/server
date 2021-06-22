@@ -1,16 +1,16 @@
 const express = require('express');
-
 const app = express ();    // Init express 
 
+app.get('/',function(req,res){
+    res.send('home page welcome to the server');
+})
 
-app.listen(3000, () => console.log('listening at 3000'));      //Listen on a port 
+app.get('/1',function(req,res){
+    res.send('welcome to the room no. 1')
+})
 
-app.use(express.static('public'));
+app.get("/2",function(req,res){
+    res.send('leardary ashish lal welcome to your room no.2')
+})
 
-
-//endpoints/ route handlers
-app.get('/',function(req,res)  {
-res.send('Hello World ');
-});
-
-
+app.listen(3000,() => console.log('listening at 3000'));     //Listen on a port 
