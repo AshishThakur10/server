@@ -1,5 +1,25 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express ();    // Init express 
+
+
+
+
+mongoose.connect()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get('/',function(req,res){
     res.send('home page welcome to the server');
