@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const app = express ();    // Init express 
 let PORT = process.env.PORT || 4000
+const User =require('./models/user');
 
 app.use(bodyParser.json());
 
@@ -23,7 +24,15 @@ require('./models/user')
 
 
 
-
+app.post('/create_user', function(req,res){
+    try{
+        const myuser = new User(req.body);
+         myuser.save();
+        res.send(myuser);
+    }catch (err) {
+        res.send();
+    }
+});
 
 
 
