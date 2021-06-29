@@ -1,0 +1,11 @@
+GET http://localhost:4000/2
+
+####
+
+POST http://localhost:4000/create_user
+Content-Type: application/json
+
+{
+    "name": "Aman",
+    "email": "aman23@gmail.com"
+}
