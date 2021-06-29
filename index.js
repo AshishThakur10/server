@@ -1,14 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express ();    // Init express 
+let PORT = process.env.PORT || 4000
 
 
 
-
-mongoose.connect()
-
-
-
+mongoose.connect('mongodb+srv://Ash1:Ash1@cluster0.pbef3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    {
+      dbName: 'Database',
+      useNewUrlParser : true,
+      useUnifiedTopology: true
+    
+    })
+    .then(()=> {
+    console.log('Mongodb connected……');
+    });
 
 
 
@@ -33,4 +39,4 @@ app.get("/2",function(req,res){
     res.send('leardary ashish lal welcome to your room no.2')
 })
 
-app.listen(process.env.PORT || 4000,() => console.log('listening at 4000'));     //Listen on a port 
+app.listen(PORT,() => console.log('listening at 4000'));     //Listen on a port 
