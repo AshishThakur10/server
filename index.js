@@ -23,19 +23,10 @@ require('./models/user')
 
 
 
-
-app.post('/create_user', function(req,res){
-    try{
-        const myuser = new User(req.body);
-         myuser.save();
-        res.send(myuser);
-    }catch (err) {
-        res.send();
-    }
-});
+require('./models/user')
 
 
-
+app.use(require('./routes/user'));
 
 app.get('/',function(req,res){
     res.send('home page welcome to the server');
