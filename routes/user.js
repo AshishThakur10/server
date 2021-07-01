@@ -11,3 +11,5 @@ router.post('/create_user', function(req,res){
         res.send();
     }
 });
+
+module.exports = router;

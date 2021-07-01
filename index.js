@@ -1,9 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const app = express ();    // Init express 
 let PORT = process.env.PORT || 4000
-const User =require('./models/user');
 
 app.use(bodyParser.json());
 
@@ -17,11 +16,6 @@ mongoose.connect('mongodb+srv://Ash1:Ash1@cluster0.pbef3.mongodb.net/myFirstData
     .then(()=> {
     console.log('Mongodb connected……');
     });
-
-require('./models/user')
-
-
-
 
 require('./models/user')
 
