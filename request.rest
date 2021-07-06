@@ -1,8 +1,10 @@
+https://server110.herokuapp.com/
+
 GET http://localhost:4000/2
 
 ####
 
-POST http://localhost:4000/create_user
+POST https://server110.herokuapp.com/create_user
 Content-Type: application/json
 
 {
@@ -11,5 +13,8 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:4000/all_user HTTP/1.1
+POST http://loccreate_useralhost:4000/
 Content-Type: application/json
+
+###
+GET https://server110.herokuapp.com/all_user
