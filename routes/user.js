@@ -1,79 +1,93 @@
+const User = require("../models/User");
+const {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+} = require("./verifyToken");
+
 const router = require("express").Router();
-const cloudinary = require("../utils/cloudinary");
-const upload = require("../utils/multer");
-const User = require("../model/user");
 
-router.post("/", upload.single("image"), async (req, res) => {
+//UPDATE
+router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+  if (req.body.password) {
+    req.body.password = CryptoJS.AES.encrypt(
+      req.body.password,
+      process.env.PASS_SEC
+    ).toString();
+  }
+
   try {
-    // Upload image to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
-
-    // Create new user
-    let user = new User({
-      name: req.body.name,
-      avatar: result.secure_url,
-      cloudinary_id: result.public_id,
-    });
-    // Save user
-    await user.save();
-    res.json(user);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 });
 
-router.get("/", async (req, res) => {
+//DELETE
+router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
-    let user = await User.find();
-    res.json(user);
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json("User has been deleted...");
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 });
 
-router.delete("/:id", async (req, res) => {
+//GET USER
+router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    // Find user by id
-    let user = await User.findById(req.params.id);
-    // Delete image from cloudinary
-    await cloudinary.uploader.destroy(user.cloudinary_id);
-    // Delete user from db
-    await user.remove();
-    res.json(user);
+    const user = await User.findById(req.params.id);
+    const { password, ...others } = user._doc;
+    res.status(200).json(others);
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 });
 
-router.put("/:id", upload.single("image"), async (req, res) => {
+//GET ALL USER
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
+  const query = req.query.new;
   try {
-    let user = await User.findById(req.params.id);
-    // Delete image from cloudinary
-    await cloudinary.uploader.destroy(user.cloudinary_id);
-    // Upload image to cloudinary
-    let result;
-    if (req.file) {
-      result = await cloudinary.uploader.upload(req.file.path);
-    }
-    const data = {
-      name: req.body.name || user.name,
-      avatar: result?.secure_url || user.avatar,
-      cloudinary_id: result?.public_id || user.cloudinary_id,
-    };
-    user = await User.findByIdAndUpdate(req.params.id, data, { new: true });
-    res.json(user);
+    const users = query
+      ? await User.find().sort({ _id: -1 }).limit(5)
+      : await User.find();
+    res.status(200).json(users);
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 });
 
-router.get("/:id", async (req, res) => {
+//GET USER STATS
+
+router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
+  const date = new Date();
+  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+
   try {
-    // Find user by id
-    let user = await User.findById(req.params.id);
-    res.json(user);
+    const data = await User.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json(data)
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 });
 

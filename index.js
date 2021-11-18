@@ -1,21 +1,20 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const app = express ();    // Init express 
-let PORT = process.env.PORT || 4000
-
+const express = require("express");
+const app = express();
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+// const userRoute = require("./routes/user");
+const authRoute = require("./routes/auth");
+const productRoute = require("./routes/product");
+const cartRoute = require("./routes/cart");
+const orderRoute = require("./routes/order");
+const stripeRoute = require("./routes/stripe");
 const cors = require("cors");
 
 dotenv.config();
 
-
-
-app.use(bodyParser.json());
-
 mongoose.connect('mongodb+srv://Ash1:Ash1@cluster0.pbef3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     {
-      dbName: 'Database',
+      dbName: 'ecommerce',
       useNewUrlParser : true,
       useUnifiedTopology: true
     
@@ -23,30 +22,15 @@ mongoose.connect('mongodb+srv://Ash1:Ash1@cluster0.pbef3.mongodb.net/myFirstData
     .then(()=> {
     console.log('Mongodb connected……');
     });
-
-//require('./models/user')
-// Middleware
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+app.use("/api/auth", authRoute);
+// app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
+app.use("/api/carts", cartRoute);
+app.use("/api/orders", orderRoute);
+app.use("/api/checkout", stripeRoute);
 
-// Route
-app.use("/user", require("./routes/user"));
-
-
-//app.use(require('./routes/user'));
-
-app.get('/',function(req,res){
-    res.send('home page welcome to the server');
-})
-
-app.get('/1',function(req,res){
-    res.send('welcome to the room no. 1')
-})
-
-app.get("/2",function(req,res){
-    res.send('leardary ashish lal welcome to your room no.2')
-})
-
-app.listen(PORT,() => console.log('listening at 5000'));   
-
-//Listen on a port 
+app.listen(process.env.PORT || 5000, () => {
+  console.log("Backend server is running!");
+});
