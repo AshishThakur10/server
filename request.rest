@@ -1,33 +1,64 @@
-https://server110.herokuapp.com/
+@site = https://server110.herokuapp.com
+@url = http://localhost:5000
+
+$aadToken = 
+
+
+https://server110.herokuapp.com/home
+###
+{{url}}/home
 
 ####
 
-POST https://server110.herokuapp.com/create_user
+POST https://server110.herokuapp.com/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Ash",
-    "email": "ash@gmail.com"
+    "username": "User2",
+    "email": "user2@email.com",
+    "password": "12345678"
 }
 
-###
+####
 
-POST http://localhost:5000/api/auth/login
+
+POST https://server110.herokuapp.com/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Ash",
-    "email": "ash@gmail.com",
-    "password": 12345678
+    "username": "User2",
+    "password": "12345678"
 }
 
-###
+###############
 
-POST http://loccreate_useralhost:4000/
+
+POST {{url}}/api/auth/register HTTP/1.1
 Content-Type: application/json
 
+{
+    "username": "admin",
+    "email": "admin@email.com",
+    "password": "12345678"
+}
 ###
-GET https://server110.herokuapp.com/all_user
 
-###
-GET https://server110.herokuapp.com/user/60da942837e54c1c5437b9d2
+POST {{url}}/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "User2",
+    "password": "12345678"
+}
+
+####
+
+PUT {{url}}/api/user/61a4edf5c1d8970016bba435 HTTP/1.1
+Content-Type: application/json
+{{$aadToken}}
+
+{
+    "username": "User2Updated"
+}
+
+####
