@@ -1,9 +1,10 @@
 @site = https://server110.herokuapp.com
 @url = http://localhost:5000
-
-$aadToken = 
-
-
+@userID = 61a4edf5c1d8970016bba435
+@token = 
+###
+{{url}}
+###
 https://server110.herokuapp.com/home
 ###
 {{url}}/home
@@ -26,7 +27,7 @@ POST https://server110.herokuapp.com/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "User2",
+    "username": "admin",
     "password": "12345678"
 }
 
@@ -55,7 +56,6 @@ Content-Type: application/json
 
 PUT {{url}}/api/user/61a4edf5c1d8970016bba435 HTTP/1.1
 Content-Type: application/json
-{{$aadToken}}
 
 {
     "username": "User2Updated"
